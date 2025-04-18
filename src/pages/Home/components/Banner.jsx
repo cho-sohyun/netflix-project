@@ -23,13 +23,13 @@ const Banner = () => {
 
   return (
     <div
-      className="relative text-white h-[40vh] md:h-[60vh] lg:h-[80vh] bg-cover bg-center overflow-hidden"
+      className="relative text-white flex items-center justify-center h-[80vh] !md:h-[60vh] lg:h-[80vh] xl:h-[90vh] bg-cover bg-center overflow-hidden"
       style={{
         backgroundImage: `
-            linear-gradient(to left,rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)),
-            url(https://media.themoviedb.org/t/p/w1066_and_h600_bestv2${data.results[0].poster_path})`,
+    linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)),
+    url(https://media.themoviedb.org/t/p/w1066_and_h600_bestv2${data.results[0].poster_path})`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "center center",
       }}
     >
       <div className="absolute bottom-4 left-4 right-4 md:left-10 md:bottom-10 md:right-auto z-10 max-w-full md:max-w-[50%]">

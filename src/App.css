@@ -1,3 +1,6 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
 .navbar-toggler {
   border-color: white;
 }
