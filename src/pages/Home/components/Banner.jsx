@@ -3,6 +3,8 @@ import { usePopularMoviesQuery } from "../../../hooks/usePopularMovies";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
 
+// 부트스트랩 제거
+
 const Banner = () => {
   const { data, isLoading, isError, error } = usePopularMoviesQuery();
   console.log(data);

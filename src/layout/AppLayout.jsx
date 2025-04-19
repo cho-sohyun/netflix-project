@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
@@ -24,11 +25,16 @@ const AppLayout = () => {
           />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="me-auto my-2 my-lg-0 gap-3" navbarScroll>
-              <Nav.Link href="/" className="text-white hover:text-red-500">
+              <Nav.Link
+                as={Link}
+                to="/"
+                className="text-white hover:text-red-500"
+              >
                 홈
               </Nav.Link>
               <Nav.Link
-                href="/movies"
+                as={Link}
+                to="/movies"
                 className="text-white hover:text-red-500"
               >
                 영화
