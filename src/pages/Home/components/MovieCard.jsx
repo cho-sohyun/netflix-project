@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // 수정 예정
 // 데스크탑 : 호버 -> 간단 정보, 클릭 -> 모달로 세부 정보
 // 모바일 : 클릭 시 모달로 정보
 
 const MovieCard = ({ movie }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (!isMobile) setIsActive(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) setIsActive(false);
+  };
+
+  const handleClick = () => {
+    if (isMobile) setIsActive((prev) => !prev);
+  };
+
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       className={`relative w-[180px] h-[300px] 
     sm:w-[200px] sm:h-[320px] 
     md:w-[220px] md:h-[350px] transition-all duration-300 ${
-      isHovered ? "z-[9999]" : "z-10"
+      isActive ? "z-[9999]" : "z-10"
     }`}
     >
       {/* 카드 이미지 */}
@@ -34,7 +60,7 @@ const MovieCard = ({ movie }) => {
     transition-all duration-300 ease-in-out z-50
     transform -translate-x-1/2
     ${
-      isHovered
+      isActive
         ? "scale-105 opacity-100 pointer-events-auto"
         : "scale-95 opacity-0 pointer-events-none"
     }`}
