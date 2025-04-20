@@ -1,5 +1,6 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import "swiper/css";
+import { Route, Routes } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
 import Homepage from "./pages/Home/Homepage";
 import MoviePage from "./pages/Movies/MoviePage";
