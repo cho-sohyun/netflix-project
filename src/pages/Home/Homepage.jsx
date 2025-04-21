@@ -13,9 +13,11 @@ const Homepage = () => {
   return (
     <div>
       <Banner />
-      <PopularMovieSlide />
-      <TopRatedMovieSlide />
-      <UpComingMovieSlide />
+      <div className="px-4 md:px-6 lg:px-12">
+        <PopularMovieSlide />
+        <TopRatedMovieSlide />
+        <UpComingMovieSlide />
+      </div>
     </div>
   );
 };

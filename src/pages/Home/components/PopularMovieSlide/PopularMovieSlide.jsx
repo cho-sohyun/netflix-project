@@ -35,7 +35,7 @@ const PopularMovieSlide = () => {
             clickable: true,
           }}
           modules={[Pagination]}
-          className="mySwiper overflow-visible"
+          className="mySwiper !overflow-visible z-10"
           breakpoints={{
             0: {
               slidesPerView: 2,

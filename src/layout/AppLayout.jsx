@@ -1,65 +1,96 @@
-import React from "react";
-
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-
-// 수정예정
-// 헤더 모바일 버전 : 홈 영화 햄버거 아이콘
-// 검색 아이콘만 출력 -> 클릭 시 검색창
+import { FiMenu, FiSearch } from "react-icons/fi";
 
 const AppLayout = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const toggleSearch = () => setIsSearchOpen((prev) => !prev);
+
   return (
     <div className="bg-black text-white">
-      <header className="bg-black h-[100px]">
-        <div className="sm:px-4 lg:px-6 flex items-center justify-between h-full">
-          {/* 왼쪽: 로고 + 메뉴 */}
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <img
-                src="/logo/logo.png"
-                alt="Netflix Logo"
-                className="w-[200px] object-contain"
-              />
+      <header className="bg-black h-[70px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+        {/* 로고 + 데스크탑 메뉴 */}
+        <div className="flex items-center gap-4">
+          {/* 모바일: 햄버거 아이콘 */}
+          <button
+            className="text-white text-2xl sm:hidden"
+            onClick={toggleMenu}
+          >
+            <FiMenu />
+          </button>
+
+          {/* 로고 */}
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo/logo.png"
+              alt="Netflix Logo"
+              className="w-[120px] object-contain"
+            />
+          </Link>
+
+          {/* 데스크탑: 홈/영화 메뉴 */}
+          <div className="hidden sm:flex items-center gap-6 text-lg font-medium ml-6">
+            <Link to="/" className="hover:text-red-500">
+              홈
             </Link>
-
-            {/* 홈/영화 메뉴 */}
-            <div className="flex text-lg font-medium gap-4 ml-6">
-              <Link to="/" className="hover:text-red-500">
-                홈
-              </Link>
-              <Link to="/movies" className="hover:text-red-500">
-                영화
-              </Link>
-            </div>
+            <Link to="/movies" className="hover:text-red-500">
+              영화
+            </Link>
           </div>
+        </div>
 
-          {/* 검색창 */}
-          <div className="flex items-center gap-2">
+        {/* 데스크탑 검색창 / 모바일 검색 아이콘 */}
+        <div className="flex items-center gap-2">
+          {/* 데스크탑: 검색창 */}
+          <div className="hidden sm:flex items-center gap-2">
             <input
               type="text"
               placeholder="검색어를 입력하세요."
-              className="bg-zinc-900 text-white border border-red-500 px-4 py-2 rounded w-36 sm:w-48 md:w-64 text-sm outline-none"
+              className="bg-zinc-900 text-white border border-red-500 px-4 py-2 rounded w-48 md:w-64 text-sm outline-none"
             />
-            <button className="border border-red-500 p-2 rounded h-10 w-10 flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                className="text-white"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10ZM15.6177 17.0319C14.078 18.2635 12.125 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10C19 12.125 18.2635 14.078 17.0319 15.6177L22.7071 21.2929L21.2929 22.7071L15.6177 17.0319Z"
-                  fill="currentColor"
-                />
-              </svg>
+            <button className="p-2">
+              <FiSearch size={20} />
             </button>
           </div>
+
+          {/* 모바일: 검색 아이콘 */}
+          <button
+            className="sm:hidden text-white text-xl"
+            onClick={toggleSearch}
+          >
+            <FiSearch />
+          </button>
         </div>
       </header>
+
+      {/* 모바일 메뉴 */}
+      {isMenuOpen && (
+        <div className="sm:hidden flex px-4 py-4 bg-zinc-900 border-t border-zinc-700">
+          <nav className="flex flex-col gap-4 text-lg">
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+              홈
+            </Link>
+            <Link to="/movies" onClick={() => setIsMenuOpen(false)}>
+              영화
+            </Link>
+          </nav>
+        </div>
+      )}
+
+      {/* 모바일 검색창 */}
+      {isSearchOpen && (
+        <div className="sm:hidden px-4 py-2 bg-zinc-900 border-b border-zinc-700">
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요."
+            className="w-full bg-zinc-800 text-white px-4 py-2 rounded text-sm outline-none border border-red-500"
+          />
+        </div>
+      )}
       <Outlet />
     </div>
   );

@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useMovieGenreQuery } from "../../../hooks/useMovieGenre";
 
 // 수정 예정
 // 데스크탑 : 호버 -> 간단 정보, 클릭 -> 모달로 세부 정보
 // 모바일 : 클릭 시 모달로 정보
 
 const MovieCard = ({ movie }) => {
+  const { data: genreData } = useMovieGenreQuery();
+
+  const showGenre = (genreIdList) => {
+    if (!genreData) return [];
+    const genreNameList = genreIdList.map((id) => {
+      const genreObj = genreData.find((genre) => genre.id === id);
+      return genreObj.name;
+    });
+    return genreNameList;
+  };
+
   const [isActive, setIsActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -67,7 +79,7 @@ const MovieCard = ({ movie }) => {
       >
         {/* 팝업 이미지 상단 */}
         <div
-          className="w-full h-[120px] sm:h-[160px] md:h-[180px] bg-cover bg-center rounded-md mb-3"
+          className="w-full h-[80px] sm:h-[140px] md:h-[150px] bg-cover bg-center rounded-md mb-3"
           style={{
             backgroundImage: `url(https://media.themoviedb.org/t/p/w600_and_h900_bestv2${
               movie.backdrop_path || movie.poster_path
@@ -86,17 +98,26 @@ const MovieCard = ({ movie }) => {
           <button className="w-6 h-6 border border-gray-400 rounded-full flex items-center justify-center text-sm">
             👍
           </button>
+          <div>
+            {showGenre(movie.genre_ids).map((genre, index) => (
+              <span
+                key={index}
+                className="m-0.5 inline-flex items-center rounded-lg bg-gray-50 px-2 py-1 text-xs text-gray-600 ring-1 ring-gray-500/10 ring-inset text-center"
+              >
+                {genre}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* 정보 */}
         <div className="text-sm text-gray-300 px-2">
           <p className="mb-1 font-semibold truncate">{movie.title}</p>
           <p className="text-xs text-gray-400 mb-1">
-            ⭐ {movie.vote_average} / 🔥 {Math.floor(movie.popularity)} /{" "}
-            {movie.adult ? "🔞" : "✅"}
+            ⭐ {movie.vote_average} / 🔥 {Math.floor(movie.popularity)}
           </p>
-          <p className="text-xs sm:line-clamp-3 line-clamp-4">
-            {movie.overview || "설명이 없습니다."}
+          <p className="text-xs text-gray-400">
+            연령: {movie.adult ? "청불" : "전체관람가"}{" "}
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTopRatedMoviesQuery } from "../../../../hooks/usePopularMovies";
+import { useTopRatedMoviesQuery } from "../../../../hooks/useTopRatedMovies";
 import MovieCard from "../MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -35,7 +35,7 @@ const TopRatedMovieSlide = () => {
             clickable: true,
           }}
           modules={[Pagination]}
-          className="mySwiper overflow-visible"
+          className="mySwiper !overflow-visible z-10"
           breakpoints={{
             0: {
               slidesPerView: 2,
