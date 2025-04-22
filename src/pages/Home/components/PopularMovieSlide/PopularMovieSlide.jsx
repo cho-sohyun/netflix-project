@@ -4,7 +4,7 @@ import MovieCard from "../MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 
-const PopularMovieSlide = () => {
+const PopularMovieSlide = ({ onMovieClick }) => {
   const { data, isLoading, isError, error } = usePopularMoviesQuery();
 
   if (isLoading) {
@@ -35,6 +35,9 @@ const PopularMovieSlide = () => {
             clickable: true,
           }}
           modules={[Pagination]}
+          preventClicks={false}
+          preventClicksPropagation={false}
+          touchStartPreventDefault={false}
           className="mySwiper !overflow-visible z-10"
           breakpoints={{
             0: {
@@ -56,7 +59,7 @@ const PopularMovieSlide = () => {
         >
           {data.results.map((movie, index) => (
             <SwiperSlide key={index}>
-              <MovieCard movie={movie} />
+              <MovieCard movie={movie} onClick={() => onMovieClick(movie)} />
             </SwiperSlide>
           ))}
         </Swiper>

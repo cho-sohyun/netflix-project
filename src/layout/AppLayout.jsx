@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { FiMenu, FiSearch } from "react-icons/fi";
 
@@ -9,6 +9,17 @@ const AppLayout = () => {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const toggleSearch = () => setIsSearchOpen((prev) => !prev);
+
+  const [keyword, setKeyword] = useState("");
+
+  const navigate = useNavigate();
+
+  const searchByKeyword = (event) => {
+    event.preventDefault();
+    // url 바꾸기
+    navigate(`/movies?q=${keyword}`);
+    setKeyword("");
+  };
 
   return (
     <div className="bg-black text-white">
@@ -46,16 +57,21 @@ const AppLayout = () => {
         {/* 데스크탑 검색창 / 모바일 검색 아이콘 */}
         <div className="flex items-center gap-2">
           {/* 데스크탑: 검색창 */}
-          <div className="hidden sm:flex items-center gap-2">
+          <form
+            className="hidden sm:flex items-center gap-2"
+            onSubmit={searchByKeyword}
+          >
             <input
               type="text"
               placeholder="검색어를 입력하세요."
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
               className="bg-zinc-900 text-white border border-red-500 px-4 py-2 rounded w-48 md:w-64 text-sm outline-none"
             />
-            <button className="p-2">
+            <button className="p-2" type="submit">
               <FiSearch size={20} />
             </button>
-          </div>
+          </form>
 
           {/* 모바일: 검색 아이콘 */}
           <button
@@ -83,13 +99,18 @@ const AppLayout = () => {
 
       {/* 모바일 검색창 */}
       {isSearchOpen && (
-        <div className="sm:hidden px-4 py-2 bg-zinc-900 border-b border-zinc-700">
+        <form
+          className="sm:hidden px-4 py-2 bg-zinc-900 border-b border-zinc-700"
+          onSubmit={searchByKeyword}
+        >
           <input
             type="text"
             placeholder="검색어를 입력하세요."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
             className="w-full bg-zinc-800 text-white px-4 py-2 rounded text-sm outline-none border border-red-500"
           />
-        </div>
+        </form>
       )}
       <Outlet />
     </div>

@@ -3,3 +3,10 @@
   background-color: black;
   color: white;
 }
+
+body,
+html {
+  overflow: auto;
+  position: relative;
+  z-index: auto;
+}

@@ -5,7 +5,7 @@ import { useMovieGenreQuery } from "../../../hooks/useMovieGenre";
 // 데스크탑 : 호버 -> 간단 정보, 클릭 -> 모달로 세부 정보
 // 모바일 : 클릭 시 모달로 정보
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, onClick }) => {
   const { data: genreData } = useMovieGenreQuery();
 
   const showGenre = (genreIdList) => {
@@ -40,7 +40,8 @@ const MovieCard = ({ movie }) => {
   };
 
   const handleClick = () => {
-    if (isMobile) setIsActive((prev) => !prev);
+    console.log("Card clicked!", movie);
+    onClick?.(movie);
   };
 
   return (

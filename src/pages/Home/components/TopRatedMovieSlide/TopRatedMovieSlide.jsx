@@ -4,7 +4,7 @@ import MovieCard from "../MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 
-const TopRatedMovieSlide = () => {
+const TopRatedMovieSlide = ({ onMovieClick }) => {
   const { data, isLoading, isError, error } = useTopRatedMoviesQuery();
   console.log(data);
   if (isLoading) {
@@ -56,7 +56,7 @@ const TopRatedMovieSlide = () => {
         >
           {data.results.map((movie, index) => (
             <SwiperSlide key={index}>
-              <MovieCard movie={movie} />
+              <MovieCard movie={movie} onClick={() => onMovieClick(movie)} />
             </SwiperSlide>
           ))}
         </Swiper>

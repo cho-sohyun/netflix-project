@@ -1,8 +1,6 @@
 import React from "react";
 import { usePopularMoviesQuery } from "../../../hooks/usePopularMovies";
 
-// 부트스트랩 제거
-
 const Banner = () => {
   const { data, isLoading, isError, error } = usePopularMoviesQuery();
   console.log(data);
