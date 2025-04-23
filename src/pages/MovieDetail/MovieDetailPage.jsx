@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { useDetailMoviesQuery } from "../../hooks/useDetailMovies";
 import { AiOutlineClose } from "react-icons/ai";
+import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
+import { useSimilarMoviesQuery } from "../../hooks/useSimilarMovies";
 
 // 상세 정보
 // 리뷰 보여주기 -> 더보기, 접기 추가
@@ -9,6 +11,17 @@ import { AiOutlineClose } from "react-icons/ai";
 // 예고편 보여주기
 const MovieDetailpage = ({ movie, onClose }) => {
   const { data: detailMovie, isLoading } = useDetailMoviesQuery(movie.id);
+  const { data: reviews, isLoading: isLoadingReview } = useMovieReviewsQuery(
+    movie.id
+  );
+  const { data: similarMovies, isLoading: isLoadingSimilar } =
+    useSimilarMoviesQuery(movie.id);
+
+  const [expandedReviewId, setExpandedReviewId] = useState(null);
+
+  const toggleReview = (id) => {
+    setExpandedReviewId((prev) => (prev === id ? null : id));
+  };
 
   if (!detailMovie || isLoading)
     return ReactDOM.createPortal(
@@ -89,6 +102,76 @@ const MovieDetailpage = ({ movie, onClose }) => {
           <p className="text-sm text-white leading-relaxed">
             {detailMovie.overview}
           </p>
+        </div>
+
+        {/* 리뷰 */}
+        <div className="p-6 pt-0">
+          <h3 className="text-xl font-bold mb-4">리뷰</h3>
+          {isLoadingReview ? (
+            <p className="text-gray-400">리뷰 불러오는 중...</p>
+          ) : reviews?.results?.length ? (
+            <ul className="space-y-4 max-h-60 overflow-y-auto pr-2">
+              {reviews.results.map((review) => {
+                const isExpanded = expandedReviewId === review.id;
+                return (
+                  <li key={review.id} className="bg-white/10 p-3 rounded-lg">
+                    <p className="text-sm text-white mb-1">
+                      <span className="font-semibold">{review.author}</span> :
+                    </p>
+                    <p
+                      className={`text-sm text-gray-300 ${
+                        isExpanded ? "" : "line-clamp-3"
+                      }`}
+                    >
+                      {review.content}
+                    </p>
+                    {review.content.length > 100 && (
+                      <button
+                        onClick={() => toggleReview(review.id)}
+                        className="text-blue-400 text-xs mt-1 hover:underline"
+                      >
+                        {isExpanded ? "접기" : "더보기"}
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="text-gray-400">작성된 리뷰가 없습니다.</p>
+          )}
+        </div>
+
+        {/* 추천 영화 */}
+        <div className="p-6 pt-0">
+          <h3 className="text-xl font-bold mb-4">함께 시청된 콘텐츠</h3>
+          {isLoadingSimilar ? (
+            <p className="text-gray-400">추천 콘텐츠 불러오는 중...</p>
+          ) : similarMovies?.results?.length ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {similarMovies.results.slice(0, 6).map((similar) => (
+                <div
+                  key={similar.id}
+                  className="bg-white/10 rounded-lg overflow-hidden"
+                >
+                  <img
+                    src={
+                      similar.poster_path
+                        ? `https://image.tmdb.org/t/p/w300${similar.poster_path}`
+                        : "/images/default-image.jpg"
+                    }
+                    alt={similar.title}
+                    className="w-full h-44 object-cover"
+                  />
+                  <p className="text-sm text-white text-center px-2 py-2 truncate">
+                    {similar.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400">비슷한 콘텐츠가 없습니다.</p>
+          )}
         </div>
       </div>
     </div>,
