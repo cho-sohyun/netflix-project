@@ -67,7 +67,7 @@ const MovieDetailpage = ({ movie, onClose, onMovieClick }) => {
           />
         ) : (
           <div
-            className="w-full h-[400px] bg-cover bg-center rounded-t-lg"
+            className="w-full h-[400px] bg-cover bg-center rounded-t-lg "
             style={{
               backgroundImage: `url(https://media.themoviedb.org/t/p/w780${
                 detailMovie.backdrop_path || detailMovie.poster_path
@@ -77,7 +77,7 @@ const MovieDetailpage = ({ movie, onClose, onMovieClick }) => {
         )}
 
         {/* 내용 영역 */}
-        <div className="p-6 mt-60">
+        <div className={`p-6 ${videoData ? "mt-60" : "mt-0"}`}>
           {/* 제목 */}
           <h2 className="text-2xl font-bold mb-2">{detailMovie.title}</h2>
 

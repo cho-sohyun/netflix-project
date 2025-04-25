@@ -6,7 +6,6 @@ import { Pagination } from "swiper/modules";
 
 const TopRatedMovieSlide = ({ onMovieClick }) => {
   const { data, isLoading, isError, error } = useTopRatedMoviesQuery();
-  console.log(data);
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[40vh] md:h-[60vh] lg:h-[80vh]">
