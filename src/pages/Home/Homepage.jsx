@@ -32,7 +32,14 @@ const Homepage = () => {
         <UpComingMovieSlide onMovieClick={openModal} />
 
         {isModalOpen && selectedMovie && (
-          <MovieDetailpage movie={selectedMovie} onClose={closeModal} />
+          <MovieDetailpage
+            movie={selectedMovie}
+            onClose={closeModal}
+            onMovieClick={(movie) => {
+              setSelectedMovie(null);
+              setTimeout(() => setSelectedMovie(movie), 100);
+            }}
+          />
         )}
       </div>
     </div>

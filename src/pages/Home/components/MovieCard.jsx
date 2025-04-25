@@ -40,7 +40,6 @@ const MovieCard = ({ movie, onClick }) => {
   };
 
   const handleClick = () => {
-    console.log("Card clicked!", movie);
     onClick?.(movie);
   };
 

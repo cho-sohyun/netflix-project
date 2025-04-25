@@ -8,8 +8,9 @@ import { useSimilarMoviesQuery } from "../../hooks/useSimilarMovies";
 // 상세 정보
 // 리뷰 보여주기 -> 더보기, 접기 추가
 // 추천 영화 보여주기
+// 인기순 최신순 정렬
 // 예고편 보여주기 -> 유튜브 말고 티저 영상 스트리밍 가능한지 확인 (라이브러리 ?) -> 배너, 상세페이지 상단 이미지 영역
-const MovieDetailpage = ({ movie, onClose }) => {
+const MovieDetailpage = ({ movie, onClose, onMovieClick }) => {
   const { data: detailMovie, isLoading } = useDetailMoviesQuery(movie.id);
   const { data: reviews, isLoading: isLoadingReview } = useMovieReviewsQuery(
     movie.id
@@ -153,6 +154,7 @@ const MovieDetailpage = ({ movie, onClose }) => {
                 <div
                   key={similar.id}
                   className="bg-white/10 rounded-lg overflow-hidden"
+                  onClick={() => onMovieClick(similar)}
                 >
                   <img
                     src={
