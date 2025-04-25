@@ -4,6 +4,8 @@ import { useDetailMoviesQuery } from "../../hooks/useDetailMovies";
 import { AiOutlineClose } from "react-icons/ai";
 import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
 import { useSimilarMoviesQuery } from "../../hooks/useSimilarMovies";
+import { useMovieVideosQuery } from "../../hooks/useMovieVideosQuery";
+import ReactPlayer from "react-player";
 
 // 상세 정보
 // 리뷰 보여주기 -> 더보기, 접기 추가
@@ -19,6 +21,8 @@ const MovieDetailpage = ({ movie, onClose, onMovieClick }) => {
     useSimilarMoviesQuery(movie.id);
 
   const [expandedReviewId, setExpandedReviewId] = useState(null);
+
+  const { data: videoData } = useMovieVideosQuery(movie?.id);
 
   const toggleReview = (id) => {
     setExpandedReviewId((prev) => (prev === id ? null : id));
@@ -51,17 +55,29 @@ const MovieDetailpage = ({ movie, onClose, onMovieClick }) => {
         </button>
 
         {/* 이미지 영역 */}
-        <div
-          className="w-full h-[400px] bg-cover bg-center rounded-t-lg"
-          style={{
-            backgroundImage: `url(https://media.themoviedb.org/t/p/w780${
-              detailMovie.backdrop_path || detailMovie.poster_path
-            })`,
-          }}
-        ></div>
+        {videoData ? (
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${videoData.key}`}
+            playing
+            muted
+            loop
+            width="100%"
+            height="250px"
+            className="absolute top-0 left-0 z-0"
+          />
+        ) : (
+          <div
+            className="w-full h-[400px] bg-cover bg-center rounded-t-lg"
+            style={{
+              backgroundImage: `url(https://media.themoviedb.org/t/p/w780${
+                detailMovie.backdrop_path || detailMovie.poster_path
+              })`,
+            }}
+          ></div>
+        )}
 
         {/* 내용 영역 */}
-        <div className="p-6">
+        <div className="p-6 mt-60">
           {/* 제목 */}
           <h2 className="text-2xl font-bold mb-2">{detailMovie.title}</h2>
 
