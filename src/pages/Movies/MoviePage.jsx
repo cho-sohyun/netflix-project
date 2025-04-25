@@ -48,6 +48,10 @@ const MoviePage = () => {
     setIsDropdownOpen(false);
   };
 
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+  };
+
   const handlePageClick = ({ selected }) => {
     setPage(selected + 1);
   };
@@ -198,6 +202,7 @@ const MoviePage = () => {
         <MovieDetailpage
           movie={selectedMovie}
           onClose={() => setSelectedMovie(null)}
+          onMovieClick={handleMovieClick}
         />
       )}
     </div>
