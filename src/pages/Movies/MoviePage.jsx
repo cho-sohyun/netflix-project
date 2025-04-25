@@ -100,41 +100,40 @@ const MoviePage = () => {
               />
             </svg>
           </button>
-        </div>
-
-        {isDropdownOpen && (
-          <div
-            class="absolute left-0 z-[999] mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-            tabindex="-1"
-          >
-            <div className="py-1" role="none">
-              <button
-                className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
-                  selectedGenre === "" ? "bg-indigo-100 font-semibold" : ""
-                }`}
-                onClick={() => handleGenreChange("")}
-              >
-                전체 보기
-              </button>
-              {genres?.map((genre) => (
+          {isDropdownOpen && (
+            <div
+              className="absolute left-0 z-[999] mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabIndex="-1"
+            >
+              <div className="py-1" role="none">
                 <button
-                  key={genre.id}
                   className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
-                    selectedGenre === genre.id
-                      ? "bg-indigo-100 font-semibold"
-                      : ""
+                    selectedGenre === "" ? "bg-indigo-100 font-semibold" : ""
                   }`}
-                  onClick={() => handleGenreChange(genre.id)}
+                  onClick={() => handleGenreChange("")}
                 >
-                  {genre.name}
+                  전체 보기
                 </button>
-              ))}
+                {genres?.map((genre) => (
+                  <button
+                    key={genre.id}
+                    className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
+                      selectedGenre === genre.id
+                        ? "bg-indigo-100 font-semibold"
+                        : ""
+                    }`}
+                    onClick={() => handleGenreChange(genre.id)}
+                  >
+                    {genre.name}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="flex justify-end items-center gap-2">
           <button
