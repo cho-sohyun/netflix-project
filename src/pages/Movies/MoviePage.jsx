@@ -10,6 +10,7 @@ import MovieDetailpage from "../MovieDetail/MovieDetailPage";
 // 경로2. 키워드를 입력해서 검색한 경우 -> 키워드와 관련된 영화 목록을 보여줌
 // 장르 드롭다운 버튼 -> 선택한 장르 이름을 보여줌
 // 장르를 선택한 경우 -> 장르에 맞는 영화 목록 필터링
+// sort 인기순 정렬
 
 const MoviePage = () => {
   const [query] = useSearchParams();
@@ -17,6 +18,7 @@ const MoviePage = () => {
   const [page, setPage] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [sortOrder, setSortOrder] = useState("desc");
 
   const { data: genres, isLoading: isGenreLoading } = useMovieGenreQuery();
 
@@ -34,6 +36,12 @@ const MoviePage = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
+
+  const sortedMovies = [...(data?.results || [])].sort((a, b) => {
+    return sortOrder === "desc"
+      ? b.popularity - a.popularity
+      : a.popularity - b.popularity;
+  });
 
   const handleGenreChange = (genreId) => {
     setSelectedGenre(genreId);
@@ -67,8 +75,8 @@ const MoviePage = () => {
 
   return (
     <div className="px-4 md:px-6 lg:px-10">
-      <div className="relative inline-block text-left">
-        <div>
+      <div className="flex justify-between items-center mt-4 mb-2">
+        <div className="relative inline-block text-left">
           <button
             type="button"
             className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
@@ -127,6 +135,29 @@ const MoviePage = () => {
             </div>
           </div>
         )}
+
+        <div className="flex justify-end items-center gap-2">
+          <button
+            onClick={() => setSortOrder("desc")}
+            className={`px-3 py-1 rounded-md text-xs border ${
+              sortOrder === "desc"
+                ? "bg-indigo-600 text-white "
+                : "bg-white text-gray-700 "
+            }`}
+          >
+            높은순
+          </button>
+          <button
+            onClick={() => setSortOrder("asc")}
+            className={`px-3 py-1 rounded-md text-xs border ${
+              sortOrder === "asc"
+                ? "bg-indigo-600 text-white"
+                : "bg-white text-gray-700"
+            }`}
+          >
+            낮은순
+          </button>
+        </div>
       </div>
 
       {data?.results.length === 0 && (
@@ -136,7 +167,7 @@ const MoviePage = () => {
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mt-4 ">
-        {data?.results.map((movie, index) => (
+        {sortedMovies.map((movie, index) => (
           <div key={index} onClick={() => setSelectedMovie(movie)}>
             <MovieCard movie={movie} />
           </div>
